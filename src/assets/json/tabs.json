@@ -1,0 +1,26 @@
+[
+    {
+        "tabId":1,
+        "displayName":"Tab1",
+        "url":null,
+        "isExternalApp":false,
+        "tabDesc":"Tab1",
+        "isSelected":true
+    },
+    {
+        "tabId":2,
+        "displayName":"Tab2",
+        "url":null,
+        "isExternalApp":false,
+        "tabDesc":"Tab2",
+        "isSelected":false
+    },
+    {
+        "tabId":3,
+        "displayName":"Tab3",
+        "url":null,
+        "isExternalApp":false,
+        "tabDesc":"Tab3",
+        "isSelected":false
+    }
+]

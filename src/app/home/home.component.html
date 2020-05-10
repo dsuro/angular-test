@@ -1,0 +1,25 @@
+﻿<div class="row">
+    <div class="col-md-12 filter">
+
+    </div>
+    <div class="col-md-12">
+        <p-table [value]="cars">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Model No</th>
+                    <th>Year</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-car>
+                <tr>
+                    <td>{{car.modelNo}}</td>
+                    <td>{{car.year}}</td>
+                    <td>{{car.brand}}</td>
+                    <td>{{car.color}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
