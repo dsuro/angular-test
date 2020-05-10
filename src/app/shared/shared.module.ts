@@ -6,12 +6,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import {TableModule} from 'primeng/table';
+import {DropdownModule} from 'primeng/dropdown';
+import { routing } from '../app.routing';
 /*Service Section*/
 import { JwtInterceptor } from './helper/jwt-interceptor';
 import { ErrorInterceptor } from './helper/error-interceptor';
 import { fakeBackendProvider } from './helper/fake-backend-interceptor';
+import { SharedService } from './services/shared.service';
+import { SharedSubscriptionService } from './services/shared-subscription.service';
+import { ApiGatewayService } from './services/api-gateway.service';
+import { AuthenticationService } from './services/authentication.service';
+import { CarService } from './services/car.service';
 /*Component Section*/
-import { routing } from '../app.routing';
+import { SingleSelectDropdownListComponent } from './components/single-select-dropdown-list/single-select-dropdown-list.component';
+import { CarColorPipe } from './pipes/car-color.pipe';
 
 /*Directive Section*/
 
@@ -27,16 +35,21 @@ import { routing } from '../app.routing';
     HttpClientModule,
     routing,
     TabsModule.forRoot(),
-    TableModule
+    TableModule,
+    DropdownModule
   ],
   exports:[
     FormsModule,
+    ReactiveFormsModule,
     TabsModule,
     TableModule,
-    ReactiveFormsModule
+    DropdownModule,
+    SingleSelectDropdownListComponent,
+    CarColorPipe
   ],
   declarations: [
-
+    SingleSelectDropdownListComponent,
+    CarColorPipe
   ]
 })
 export class SharedModule { 
@@ -50,7 +63,12 @@ export class SharedModule {
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
+        SharedService,
+        SharedSubscriptionService,
+        ApiGatewayService,
+        AuthenticationService,
+        CarService
       ]
     };
   }

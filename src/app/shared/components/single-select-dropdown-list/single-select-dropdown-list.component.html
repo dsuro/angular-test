@@ -1,0 +1,11 @@
+<div *ngIf="showDropdown">
+    <p-dropdown 
+      [options]="dropdownData" 
+      [(ngModel)]="selectedItem"
+      [filter]="filter"
+      [disabled]="isDisabled"
+      [resetFilterOnHide]="true"
+      [placeholder]="placeholderText"
+      (onChange)="onItemChange($event)">
+    </p-dropdown>
+</div>

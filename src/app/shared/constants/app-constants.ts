@@ -1,4 +1,4 @@
 export const AppConstants ={
-    ENCRYPTION_KEY:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-    TAB_SERVICE_URL:'./assets/json/tabs.json'
+    CAR_SERVICE_URL:'./assets/json/cars.json',
+    BRAND_SERVICE_URL:'./assets/json/brands.json'
 };

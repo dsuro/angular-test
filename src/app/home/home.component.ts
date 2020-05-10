@@ -1,10 +1,9 @@
 
 import { Component, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { UserModel } from '../shared/models/user-model';
-import { UserService } from '../shared/services/user.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
+import { CarService } from '../shared/services/car.service';
 
 
 
@@ -16,45 +15,59 @@ import { AuthenticationService } from '../shared/services/authentication.service
 export class HomeComponent implements OnInit {
     currentUser: UserModel;
     currentUserSubscription: Subscription;
+    private carSubscrition:Subscription;
+    private brandsSubscrition:Subscription;
     users: UserModel[] = [];
-    cars=[ 
-    {"brand": "VW", "year": 2012, "color": "Orange", "modelNo": "A001"},
-    {"brand": "Audi", "year": 2011, "color": "Black", "modelNo": "A002"},
-    {"brand": "Renault", "year": 2005, "color": "Gray", "modelNo": "A003"},
-    {"brand": "BMW", "year": 2003, "color": "Blue", "modelNo": "A004"},
-    {"brand": "Mercedes", "year": 1995, "color": "Orange", "modelNo": "A005"},
-    {"brand": "Volvo", "year": 2005, "color": "Black", "modelNo": "A006"},
-    {"brand": "Honda", "year": 2012, "color": "Yellow", "modelNo": "A007"},
-    {"brand": "Jaguar", "year": 2013, "color": "Orange", "modelNo": "A008"},
-    {"brand": "Ford", "year": 2000, "color": "Black", "modelNo": "A009"},
-    {"brand": "Fiat", "year": 2013, "color": "Red", "modelNo": "A010"}];
-    constructor(
-        private authenticationService: AuthenticationService,
-        private userService: UserService
-    ) {
+    cars:Array<any>;
+    carsOriginalList:Array<any>=[];
+    carBrands=[];
+    defaultBrand="ALL";
+    constructor(private authenticationService: AuthenticationService,
+        private carService:CarService
+    ) 
+    {
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
             this.currentUser = user;
         });
     }
-
     ngOnInit() {
-        this.loadAllUsers();
+        
+        this.getBrands();
+        this.getAllCars();
     }
-
+    getAllCars(){
+        this.carSubscrition=this.carService.getAllCars()
+        .subscribe((cars)=>{
+          console.log(cars);
+          this.cars=cars;
+          this.carsOriginalList=JSON.parse(JSON.stringify(cars));
+        });
+    }
+    getBrands(){
+        this.brandsSubscrition=this.carService.getBrands()
+        .subscribe((brands)=>{
+          console.log(brands);
+          this.carBrands=brands;
+          this.carBrands.unshift({"label":"ALL","value":"ALL"});
+        });
+    }
+    onBrandSelected(event){
+        //console.log(event);
+        if(event!="ALL"){
+            const cars=this.carsOriginalList.filter((item)=>{
+                return item['brand']==event;
+            });
+            //console.log(cars);
+            this.cars=cars;
+        }else{
+            this.cars=[...this.carsOriginalList];
+        }
+    }
     ngOnDestroy() {
         // unsubscribe to ensure no memory leaks
         this.currentUserSubscription.unsubscribe();
-    }
-
-    deleteUser(id: number) {
-        this.userService.delete(id).pipe(first()).subscribe(() => {
-            this.loadAllUsers()
-        });
-    }
-
-    private loadAllUsers() {
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.users = users;
-        });
+        if(this.carSubscrition){
+            this.carSubscrition.unsubscribe();
+        }
     }
 }

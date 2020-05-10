@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../shared/services/authentication.service';
-import { AlertService } from '../shared/services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +19,7 @@ export class LoginComponent implements OnInit {
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthenticationService,
-      private alertService: AlertService
+      private authenticationService: AuthenticationService
   ) {
 
       if (this.authenticationService.currentUserValue) { 
@@ -58,7 +56,6 @@ export class LoginComponent implements OnInit {
                   this.router.navigate([this.returnUrl]);
               },
               error => {
-                  this.alertService.error(error);
                   this.loading = false;
               });
   }
