@@ -77,7 +77,14 @@
             "codeCoverage": true,
             "codeCoverageExclude": [
               "src/polyfills.ts",
-              "**/test.ts"
+              "**/test.ts",
+              "**/testing/**/*",
+              "**/helper/**/*",
+              "**/constants/**/*",
+              "**/models/**/*",
+              "**/enums/**/*",
+              "**/environments/**/*",
+              "**/*.module.ts"
             ],
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",

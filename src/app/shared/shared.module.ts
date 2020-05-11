@@ -20,6 +20,7 @@ import { CarService } from './services/car.service';
 /*Component Section*/
 import { SingleSelectDropdownListComponent } from './components/single-select-dropdown-list/single-select-dropdown-list.component';
 import { CarColorPipe } from './pipes/car-color.pipe';
+import { RowHoverDirective } from './directives/row-hover.directive';
 
 /*Directive Section*/
 
@@ -45,11 +46,13 @@ import { CarColorPipe } from './pipes/car-color.pipe';
     TableModule,
     DropdownModule,
     SingleSelectDropdownListComponent,
-    CarColorPipe
+    CarColorPipe,
+    RowHoverDirective
   ],
   declarations: [
     SingleSelectDropdownListComponent,
-    CarColorPipe
+    CarColorPipe,
+    RowHoverDirective
   ]
 })
 export class SharedModule { 

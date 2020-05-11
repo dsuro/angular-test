@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { SharedSubscriptionService } from './shared-subscription.service';
 
-describe('SharedSubscriptionService', () => {
+xdescribe('SharedSubscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [SharedSubscriptionService]

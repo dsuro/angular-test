@@ -1,3 +1,4 @@
+declare var require: any;
 function getAllCars(){
     const data=require('./../../../assets/json/cars.json');
     return data;

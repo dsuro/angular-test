@@ -8,6 +8,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { UserModel } from '../shared/models/user-model';
 import * as mockData from './../shared/constants/mock-data';
 
+/*Mock Services */
 class MockAuthenticationService{
   public currentUserSubject: BehaviorSubject<UserModel>;
   public currentUser: Observable<UserModel>;
@@ -62,11 +63,11 @@ describe('Component::HomeComponent', () => {
     fixture.destroy();
   });
 
-  fit('should create',fakeAsync(() => {
+  it('should create',fakeAsync(() => {
     expect(component).toBeTruthy();
   }));
 
-  fit('should test subscibeAll',fakeAsync(() => {
+  it('should test subscibeAll',fakeAsync(() => {
     authenticationService.sendUser({
       id: 2,
       username: 'admin',
@@ -81,7 +82,7 @@ describe('Component::HomeComponent', () => {
     });
   }));
 
-  fit('should test getAllCars',fakeAsync(() => {
+  it('should test getAllCars',fakeAsync(() => {
     carServiceSpy.getAllCars.and.returnValue(asyncData(mockData.mockData.allCars));
     component.getAllCars();
     advance(fixture);
@@ -90,7 +91,7 @@ describe('Component::HomeComponent', () => {
     });
   }));
 
-  fit('should test getBrands',fakeAsync(() => {
+  it('should test getBrands',fakeAsync(() => {
     carServiceSpy.getBrands.and.returnValue(asyncData(mockData.mockData.allCars));
     component.getBrands();
     advance(fixture);
@@ -98,4 +99,13 @@ describe('Component::HomeComponent', () => {
       expect(component.carBrands.length).toBeGreaterThan(0);
     });
   }));
+
+  it('should test onBrandSelected',()=>{
+    component.carsOriginalList=mockData.mockData.allCars;
+    const event="Audi";
+    component.onBrandSelected(event);
+    fixture.detectChanges();
+    expect(component.cars.length).toBe(1);
+  });
+
 });

@@ -1,3 +1,6 @@
 .filter{
     height: 50px;
 }
+::ng-deep .ui-table .ui-table-tbody > tr:nth-child(even){
+background-color: #ffffff;
+}

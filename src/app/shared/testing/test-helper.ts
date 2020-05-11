@@ -1,10 +1,16 @@
 import { Component, OnInit,Input,Output,EventEmitter, Pipe, PipeTransform } from '@angular/core';
-import {tick,TestBed} from '@angular/core/testing';
+import { tick,TestBed} from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
 import { defer } from 'rxjs';
-  
-export function advance(fixture: ComponentFixture<any>): void {
-    tick();
+import { Params } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
+export function advance(fixture: ComponentFixture<any>,timeFrame:number=0): void {
+    if(timeFrame){
+      tick(timeFrame);
+    }else{
+      tick();
+    }
     fixture.detectChanges();
 }
   /*
@@ -30,6 +36,36 @@ export function asyncError<T>(errorObject: any) {
     return defer(() => Promise.reject(errorObject));
 }
 
+
+/*Mock Route */
+export class MockActivatedRoute {
+  private innerTestParams?: any;
+  private subject?: BehaviorSubject<any> = new BehaviorSubject(this.testParams);
+
+  params = this.subject.asObservable();
+  queryParams = this.subject.asObservable();
+
+  constructor(params?: Params) {
+    if (params) {
+      this.testParams = params;
+    } else {
+      this.testParams = {};
+    }
+  }
+
+  get testParams() {
+    return this.innerTestParams;
+  }
+
+  set testParams(params: {}) {
+    this.innerTestParams = params;
+    this.subject.next(params);
+  }
+
+  get snapshot() {
+    return { params: this.testParams, queryParams: this.testParams };
+  }
+}
 /*Mock Components */
 
 @Component({

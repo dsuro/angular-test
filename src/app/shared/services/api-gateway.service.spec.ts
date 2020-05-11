@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { ApiGatewayService } from './api-gateway.service';
 
-describe('ApiGatewayService', () => {
+xdescribe('ApiGatewayService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ApiGatewayService]

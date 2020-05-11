@@ -1,27 +1,83 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture, getTestBed, fakeAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-describe('AppComponent', () => {
+import { UserModel } from './shared/models/user-model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { AuthenticationService } from './shared/services/authentication.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+
+/*Mock Services */
+class MockAuthenticationService{
+  public currentUserSubject: BehaviorSubject<UserModel>;
+  public currentUser: Observable<UserModel>;
+  constructor() {
+     
+  }
+  sendUser(user){
+    this.currentUserSubject = new BehaviorSubject<UserModel>(user);
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+  logout(){
+
+  }
+}
+/*Test Suite */
+describe('Component::AppComponent', () => {
+  let injector:TestBed;
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let authenticationService:MockAuthenticationService;
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const mockUser={
+    "id":1,
+    "username":"admin",
+    "firstName":"admin",
+    "lastName":"admin",
+    "password":"admin",
+    "token":"fake-jwt-token"
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports:[RouterTestingModule],
+      schemas:[
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA],
       declarations: [
-        AppComponent
+        AppComponent,
       ],
-    }).compileComponents();
+      providers:[
+        {provide:AuthenticationService,useClass:MockAuthenticationService},
+        {provide:Router,useValue:routerSpy}
+      ]
+    })
+    .compileComponents();
   }));
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-  it(`should have as title 'angular-test'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('angular-test');
-  }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+
+  beforeEach(() => {
+    injector=getTestBed();
+    authenticationService=injector.get(AuthenticationService);
+    authenticationService.sendUser(mockUser);
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-test!');
+  });
+
+  afterEach(()=>{
+    authenticationService=null;
+    fixture.destroy();
+  });
+
+  it('should create',fakeAsync(() => {
+    expect(component).toBeTruthy();
   }));
+
+  it('should test logout', () => {
+    component.logout();
+    fixture.detectChanges();
+    const navArgs=routerSpy.navigate.calls.first().args[0];
+    expect(navArgs).toEqual([ '/login' ]);
+  });
+
 });

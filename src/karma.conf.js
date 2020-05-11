@@ -20,12 +20,23 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
+    customLaunchers: {
+      Chrome_without_background_throttle: {
+        base: 'Chrome',
+        flags: ['--disable-background-timer-throttling','--disable-renderer-backgrounding']
+      }
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
+    autoWatch: false,
+    captureTimeout: 210000,
+    browserDisconnectTolerance:3,
+    browserDisconnectTimeout:210000,
+    browserNoActivityTimeout: 210000,
     browsers: ['Chrome'],
-    singleRun: false
+    singleRun: false,
+    concurrency:Infinity
   });
 };
