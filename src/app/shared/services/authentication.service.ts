@@ -8,19 +8,18 @@ import { ApiGatewayService } from './api-gateway.service';
 @Injectable()
 export class AuthenticationService {
     private seriveName:string='AuthenticationService';
-    private currentUserSubject: BehaviorSubject<UserModel>;
+    public currentUserSubject: BehaviorSubject<UserModel>;
     public currentUser: Observable<UserModel>;
 
     constructor(private sharedService:SharedService,
-        private apiGatewayService:ApiGatewayService) {
-        this.currentUserSubject = new BehaviorSubject<UserModel>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
+                private apiGatewayService:ApiGatewayService) {
+         this.currentUserSubject = new BehaviorSubject<UserModel>(JSON.parse(localStorage.getItem('currentUser')));
+         this.currentUser = this.currentUserSubject.asObservable();
     }
 
     public get currentUserValue(): UserModel {
         return this.currentUserSubject.value;
     }
-
     login(username: string, password: string) {
         const resourceUrl=this.sharedService.getResourceURL('users/authenticate');
         return this.apiGatewayService.post(this.seriveName,'login',resourceUrl, { username, password })
@@ -34,7 +33,6 @@ export class AuthenticationService {
                 return user;
             }));
     }
-
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');

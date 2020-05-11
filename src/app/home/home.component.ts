@@ -13,7 +13,7 @@ import { CarService } from '../shared/services/car.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    currentUser: UserModel;
+    currentUser: UserModel=null;
     currentUserSubscription: Subscription;
     private carSubscrition:Subscription;
     private brandsSubscrition:Subscription;
@@ -26,29 +26,39 @@ export class HomeComponent implements OnInit {
         private carService:CarService
     ) 
     {
-        this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-            this.currentUser = user;
-        });
+
     }
     ngOnInit() {
-        
+        this.subscibeAll();
         this.getBrands();
         this.getAllCars();
+    }
+    subscibeAll(){
+        this.currentUserSubscription = this.authenticationService.currentUser
+        .subscribe(user => {
+            if(user){
+                this.currentUser = user;
+            }
+        });
     }
     getAllCars(){
         this.carSubscrition=this.carService.getAllCars()
         .subscribe((cars)=>{
-          console.log(cars);
-          this.cars=cars;
-          this.carsOriginalList=JSON.parse(JSON.stringify(cars));
+            if(cars){
+            //console.log(cars);
+            this.cars=cars;
+            this.carsOriginalList=JSON.parse(JSON.stringify(cars));
+            }
         });
     }
     getBrands(){
         this.brandsSubscrition=this.carService.getBrands()
         .subscribe((brands)=>{
-          console.log(brands);
-          this.carBrands=brands;
-          this.carBrands.unshift({"label":"ALL","value":"ALL"});
+            if(brands){
+                //console.log(brands);
+                this.carBrands=brands;
+                this.carBrands.unshift({"label":"ALL","value":"ALL"});
+            }
         });
     }
     onBrandSelected(event){
@@ -65,9 +75,14 @@ export class HomeComponent implements OnInit {
     }
     ngOnDestroy() {
         // unsubscribe to ensure no memory leaks
-        this.currentUserSubscription.unsubscribe();
+        if(this.currentUserSubscription){
+            this.currentUserSubscription.unsubscribe();
+        }
         if(this.carSubscrition){
             this.carSubscrition.unsubscribe();
+        }
+        if(this.brandsSubscrition){
+            this.brandsSubscrition.unsubscribe();
         }
     }
 }
