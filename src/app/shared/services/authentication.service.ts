@@ -7,7 +7,6 @@ import { ApiGatewayService } from './api-gateway.service';
 
 @Injectable()
 export class AuthenticationService {
-    private seriveName:string='AuthenticationService';
     public currentUserSubject: BehaviorSubject<UserModel>;
     public currentUser: Observable<UserModel>;
 
@@ -16,13 +15,13 @@ export class AuthenticationService {
          this.currentUserSubject = new BehaviorSubject<UserModel>(JSON.parse(localStorage.getItem('currentUser')));
          this.currentUser = this.currentUserSubject.asObservable();
     }
-
     public get currentUserValue(): UserModel {
         return this.currentUserSubject.value;
     }
     login(username: string, password: string) {
         const resourceUrl=this.sharedService.getResourceURL('users/authenticate');
-        return this.apiGatewayService.post(this.seriveName,'login',resourceUrl, { username, password })
+        const requestPayload={ username, password };
+        return this.apiGatewayService.post(resourceUrl,null,requestPayload)
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
                 if (user && user.token) {

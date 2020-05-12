@@ -1,30 +1,15 @@
 import { Injectable} from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { AppConstants } from '../constants/app-constants';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SharedService {
-  private userToken:String='';//YWRtaW4=
-  private isInEditMode:Boolean=false;
+  private isApiRequest$=new BehaviorSubject({isApiRequest:false});
+  private userToken:String='';
   constructor() { }
   getResourceURL(resource):string
   {
     return environment.BASE_SERVICE_URL+resource;
-  }
-  interpolation(input:string,expression:any):string
-  {
-    let modifiedStr:string=input;
-    if(typeof expression!=undefined && expression!=null)
-    {
-      for(let key in expression)
-      {
-        let val=expression[key];
-        key="{{"+key+"}}";
-        modifiedStr=modifiedStr.replace(key,val);
-      }
-    }
-    console.log(modifiedStr);
-    return modifiedStr;
   }
   setUserToken(userToken)
   {
@@ -33,10 +18,10 @@ export class SharedService {
   getUserToken():String{
     return this.userToken;
   }
-  setIsInEditMode(isInEditMode){
-    this.isInEditMode=isInEditMode;
+  sendApiRequest(isApiRequest){
+    this.isApiRequest$.next({isApiRequest:isApiRequest});
   }
-  getIsInEditMode():Boolean{
-    return this.isInEditMode;
+  receiveApiRequest(){
+      return this.isApiRequest$.asObservable();
   }
 }

@@ -13,18 +13,15 @@ import { JwtInterceptor } from './helper/jwt-interceptor';
 import { ErrorInterceptor } from './helper/error-interceptor';
 import { fakeBackendProvider } from './helper/fake-backend-interceptor';
 import { SharedService } from './services/shared.service';
-import { SharedSubscriptionService } from './services/shared-subscription.service';
 import { ApiGatewayService } from './services/api-gateway.service';
 import { AuthenticationService } from './services/authentication.service';
 import { CarService } from './services/car.service';
 /*Component Section*/
 import { SingleSelectDropdownListComponent } from './components/single-select-dropdown-list/single-select-dropdown-list.component';
-import { CarColorPipe } from './pipes/car-color.pipe';
-import { RowHoverDirective } from './directives/row-hover.directive';
-
 /*Directive Section*/
-
+import { RowHoverDirective } from './directives/row-hover.directive';
 /*Pipe Section*/
+import { CarColorPipe } from './pipes/car-color.pipe';
 
 @NgModule({
   imports: [
@@ -64,11 +61,8 @@ export class SharedModule {
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-        // provider used to create fake backend
         fakeBackendProvider,
         SharedService,
-        SharedSubscriptionService,
         ApiGatewayService,
         AuthenticationService,
         CarService

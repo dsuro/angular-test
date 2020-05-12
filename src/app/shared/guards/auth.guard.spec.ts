@@ -1,11 +1,11 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, async} from '@angular/core/testing';
 import { AuthGuard } from './auth.guard';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
-describe('AuthGuard', () => {
+/*Test Suite */
+describe('Guard::AuthGuard', () => {
   let guard:AuthGuard;
   let injector:TestBed;
   const authenticationServiceSpy = jasmine.createSpyObj('AuthenticationService', ['currentUserValue']);

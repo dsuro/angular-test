@@ -7,22 +7,18 @@ import { AppConstants } from '../constants/app-constants';
 
 @Injectable()
 export class CarService {
-  private seriveName:string='CarService';
   constructor(private sharedService:SharedService,
     private apiGatewayService:ApiGatewayService) { }
     public getAllCars():Observable<Array<any>>
     {
-      //console.log(userDto);
-      let resourceUrl=this.sharedService.getResourceURL(AppConstants.CAR_SERVICE_URL);
-      return this.apiGatewayService.get(this.seriveName,'getAllCars',resourceUrl,null)
+      const resourceUrl=this.sharedService.getResourceURL(AppConstants.CAR_SERVICE_URL);
+      return this.apiGatewayService.get(resourceUrl,null)
                   .pipe(map(reponse =>reponse as Array<any>));
     }
-
     public getBrands():Observable<Array<any>>
     {
-      //console.log(userDto);
-      let resourceUrl=this.sharedService.getResourceURL(AppConstants.BRAND_SERVICE_URL);
-      return this.apiGatewayService.get(this.seriveName,'getBrands',resourceUrl,null)
+      const resourceUrl=this.sharedService.getResourceURL(AppConstants.BRAND_SERVICE_URL);
+      return this.apiGatewayService.get(resourceUrl,null)
                   .pipe(map(reponse =>reponse as Array<any>));
     }
 }

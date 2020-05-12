@@ -108,4 +108,11 @@ describe('Component::HomeComponent', () => {
     expect(component.cars.length).toBe(1);
   });
 
+  it('should test onBrandSelected for ALL',()=>{
+    component.carsOriginalList=mockData.mockData.allCars;
+    const event="ALL";
+    component.onBrandSelected(event);
+    fixture.detectChanges();
+    expect(component.cars.length).toBe(component.carsOriginalList.length);
+  });
 });
