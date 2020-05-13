@@ -9,7 +9,6 @@ import {TableModule} from 'primeng/table';
 import {DropdownModule} from 'primeng/dropdown';
 import { routing } from '../app.routing';
 /*Service Section*/
-import { JwtInterceptor } from './helper/jwt-interceptor';
 import { fakeBackendProvider } from './helper/fake-backend-interceptor';
 import { SharedService } from './services/shared.service';
 import { ApiGatewayService } from './services/api-gateway.service';
@@ -21,6 +20,7 @@ import { SingleSelectDropdownListComponent } from './components/single-select-dr
 import { RowHoverDirective } from './directives/row-hover.directive';
 /*Pipe Section*/
 import { CarColorPipe } from './pipes/car-color.pipe';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 @NgModule({
   imports: [
@@ -58,7 +58,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule, 
       providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
         fakeBackendProvider,
         SharedService,
         ApiGatewayService,
