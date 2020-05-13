@@ -18,6 +18,14 @@ describe('AuthenticationService', () => {
     "password":"admin",
     "token":"fake-jwt-token"
   };
+  const mockUserTokenNull={
+    "id":1,
+    "username":"admin",
+    "firstName":"admin",
+    "lastName":"admin",
+    "password":"admin",
+    "token":null
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,6 +57,25 @@ describe('AuthenticationService', () => {
     service.login(username,password).subscribe((response)=>{
       expect(response).toBeDefined();
       expect(response['token']).toBeDefined();
+    });
+  });
+
+  it('should test login with null token',()=>{
+    apiGatewayServiceSpy.post.and.returnValue(asyncData(mockUserTokenNull));
+    const username="admin";
+    const password="admin";
+    service.login(username,password).subscribe((response)=>{
+      expect(response).toBeDefined();
+      expect(response['token']).toBeNull();
+    });
+  });
+
+  it('should test login with null response',()=>{
+    apiGatewayServiceSpy.post.and.returnValue(asyncData(null));
+    const username="admin";
+    const password="admin";
+    service.login(username,password).subscribe((response)=>{
+      expect(response).toBeNull();
     });
   });
 

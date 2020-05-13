@@ -10,7 +10,6 @@ import {DropdownModule} from 'primeng/dropdown';
 import { routing } from '../app.routing';
 /*Service Section*/
 import { JwtInterceptor } from './helper/jwt-interceptor';
-import { ErrorInterceptor } from './helper/error-interceptor';
 import { fakeBackendProvider } from './helper/fake-backend-interceptor';
 import { SharedService } from './services/shared.service';
 import { ApiGatewayService } from './services/api-gateway.service';
@@ -60,7 +59,6 @@ export class SharedModule {
       ngModule: SharedModule, 
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         fakeBackendProvider,
         SharedService,
         ApiGatewayService,

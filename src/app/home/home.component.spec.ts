@@ -115,4 +115,15 @@ describe('Component::HomeComponent', () => {
     fixture.detectChanges();
     expect(component.cars.length).toBe(component.carsOriginalList.length);
   });
+
+  it('should test ngOnDestroy',()=>{
+    component.carSubscrition=null;
+    component.brandsSubscrition=null;
+    component.currentUserSubscription=null;
+    component.ngOnDestroy();
+    expect(component.carSubscrition).toBeNull();
+    expect(component.brandsSubscrition).toBeNull();
+    expect(component.currentUserSubscription).toBeNull();
+  });
+
 });

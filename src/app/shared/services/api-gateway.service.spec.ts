@@ -62,8 +62,9 @@ describe('Service::ApiGatewayService', () => {
     mockRequest.flush(mockResponse);
    });
 
-  it('should test handleError', () => {
-    resourceUrl="/testurl";
+  it('should test handleError with backend message', () => {
+    resourceUrl="/testurl1";
+    spyOn(console,'error');
     const mockResponse={status:500,statusText:'Internal Server Error'};
     let response=null;
     let errResponse=null;
@@ -72,5 +73,18 @@ describe('Service::ApiGatewayService', () => {
     mockHttp.expectOne(API_URL+resourceUrl).flush(data,mockResponse);
     expect(response).toBeDefined();
     expect(errResponse).toBeDefined();
+    expect(console.error).toHaveBeenCalled();
+   });
+
+  it('should test handleError with a client-side or network error occurred', () => {
+    resourceUrl="/testurl2";
+    spyOn(console,'error');
+    service.get(API_URL+resourceUrl,null).subscribe((res) => {
+        console.log(`in success:`, res);
+    }, (error) => {
+        console.log(`in error:`, error);
+    });
+    mockHttp.expectOne(API_URL+resourceUrl).error(new ErrorEvent('network error'));
+    expect(console.error).toHaveBeenCalled();
    });
 });
