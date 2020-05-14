@@ -31,7 +31,7 @@
     "primeng": "^6.0.0",
     "rxjs": "~6.2.0",
     "rxjs-compat": "^6.2.0",
-    "serialize-javascript": "^3.0.0",
+    "serialize-javascript": "^2.1.1",
     "underscore": "^1.9.1",
     "zone.js": "~0.8.26"
   },
